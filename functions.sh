@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # make scripts executable
-chmod -P +x ./travis/*
+chmod +x travis/*
+chmod +x travis/.NET/*
+chmod +x travis/.NET/scripts/*
 
 tr_setProjectSubdir() {
     export TRAVIS=travis/$1
