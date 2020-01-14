@@ -1,5 +1,5 @@
 #!/bin/bash
 nuget restore $SOLUTION_NAME.sln
 
-./scripts/inst_dotnetcoresdk.sh
-./scripts/inst_minver.sh
+$TRAVIS/scripts/inst_dotnetcoresdk.sh
+$TRAVIS/scripts/inst_minver.sh
