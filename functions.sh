@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# make scripts executable
+chmod -P +x ./travis/*
+
 tr_setProjectSubdir() {
     export TRAVIS=travis/$1
 }
