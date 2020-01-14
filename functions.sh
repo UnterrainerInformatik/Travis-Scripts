@@ -2,7 +2,6 @@
 
 tr_setProjectSubdir() {
     export TRAVIS=travis/$1
-    export ROOT=$(pwd)
 }
 
 tr_isSet() {
