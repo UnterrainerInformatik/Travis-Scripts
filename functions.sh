@@ -15,11 +15,13 @@ tr_isSet() {
 }
 
 tr_isSetAndNotFalse() {
-    if tr_isSet ${!1}; then
-        if [ "$1" = false]; then
+    if tr_isSet ${1}; then
+        if [ "${!1}" = "false" ]; then
             return 1
         else
             return 0
         fi
+    else
+        return 1
     fi
 }
