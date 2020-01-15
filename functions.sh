@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# make scripts executable
+chmod +x travis/*
+chmod +x travis/.NET/*
+chmod +x travis/.NET/scripts/*
+
+tr_setProjectSubdir() {
+    export TRAVIS=travis/$1
+}
+
 tr_isSet() {
     if [[ -z ${!1+.} ]]; then 
             echo "variable is unset."
@@ -21,11 +30,3 @@ tr_isSetAndNotFalse() {
         return 1
     fi
 }
-
-# make scripts executable
-chmod +x travis/*
-chmod +x travis/.NET/*
-chmod +x travis/.NET/scripts/*
-
-# set environment variable
-export TRAVIS=travis/$PROJECT_SUBDIR
