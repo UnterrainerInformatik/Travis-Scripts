@@ -13,6 +13,7 @@ if tr_isSetAndNotFalse MONOGAME; then
     wget https://github.com/MonoGame/MonoGame/releases/download/$VERSION/monogame-sdk.run
     chmod +x monogame-sdk.run
     
+    # We have to answer 'yes' once...
     sudo ./monogame-sdk.run << 'EOF'
 Y
 EOF
