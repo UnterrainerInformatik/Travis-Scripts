@@ -12,5 +12,9 @@ if tr_isSetAndNotFalse MONOGAME; then
     echo "MonoGame version is [$VERSION]"
     wget https://github.com/MonoGame/MonoGame/releases/download/$VERSION/monogame-sdk.run
     chmod +x monogame-sdk.run
-    sudo ./monogame-sdk.run
+    
+    sudo ./monogame-sdk.run << 'EOF'
+Y
+EOF
+
 fi
