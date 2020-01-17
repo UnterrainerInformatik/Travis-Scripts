@@ -70,7 +70,13 @@ The `.NET` folder contains scripts to compile your C# .NET project (a Visual Stu
 If you don't like a nuget package to be published, just don't declare the variable `NUGET` or set it to `false`.
 Then you may omit setting the other variables starting with `NUGET_` as well.
 
+#### MONOGAME Notes
 
+If you're using the MonoGame switch, then you have a few extra options.
+
+When using SpriteFonts, the build-system of MonoGame has to have the font installed on your system (except if you use the SpriteFonts with an image-map).
+So there has to be a directory `/Travis-Install` in your build where all your `TTF` fonts reside.
+The script will install them on the builder before running the build.
 
 ## Usage
 
@@ -79,18 +85,20 @@ Then you may omit setting the other variables starting with `NUGET_` as well.
    
 2. Take the `.travis.yml` file from out of that folder and copy it to the root of your repository.
 
-3. Go to the GitHub page of your repository and click the `Actions` button:
+3. Make a root-directory `Travis-Install` where you can put assets that need to be installed on the builder before starting the build.
+
+4. Go to the GitHub page of your repository and click the `Actions` button:
    ![github actions select](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/github-actions-select.png)
-   
-4. Click `Set up a Workflow yourself` in the top right corner:
+
+5. Click `Set up a Workflow yourself` in the top right corner:
    ![gitbub actions self](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/github-actions-self.png)
 
-5. Copy the contents of the file `github-action.yml` in the root of this repository into the text-editor on your screen.
+6. Copy the contents of the file `github-action.yml` in the root of this repository into the text-editor on your screen.
 
-6. Commit the changes to the master branch to activate the action:
+7. Commit the changes to the master branch to activate the action:
    ![github actions commit](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/github-actions-commit.png)
 
-7. Now you still have to push a starting-tag to the master.
+8. Now you still have to push a starting-tag to the master.
    You can do this using the GitHub UI (Tag == Release) or command-line git.
 
    ```bash
@@ -98,17 +106,17 @@ Then you may omit setting the other variables starting with `NUGET_` as well.
    git push origin 1.0.0
    ```
 
-8. Now to Travis-CI and log in.
+9. Now to Travis-CI and log in.
 
-9. Connect it to your GitHub account, if you didn't already do that.
+10. Connect it to your GitHub account, if you didn't already do that.
 
-10. Add your GitLab repository:
+11. Add your GitLab repository:
    ![travis add repo](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/travis-add-repo.png)
 
-11. Configure the build by setting the Travis Environment Variables:
+12. Configure the build by setting the Travis Environment Variables:
     ![travis environment variables](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/travis-environment-variables.png)
 
-12. The next push to master should trigger the build now.
+13. The next push to master should trigger the build now.
 
 
 

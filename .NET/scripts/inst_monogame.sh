@@ -18,4 +18,10 @@ if tr_isSetAndNotFalse MONOGAME; then
 Y
 EOF
 
+    # Install TTF files.
+    echo "Installing TTF files"
+    mkdir -p ~/.local/share/fonts
+    cp Travis-Install/*.ttf ~/.local/share/fonts/
+    echo "Refreshing font cache"
+    fc-cache -f -v
 fi
