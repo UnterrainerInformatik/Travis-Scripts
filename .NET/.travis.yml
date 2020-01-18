@@ -46,7 +46,7 @@ script:
   - source $TRAVIS/script.sh
 
 before_deploy:
-  - zip 
+  - zip -r $DEPLOY_BUILD.$VERSION.zip $BUILD_TARGET/*
 deploy:
   - provider: script
     skip_cleanup: true
@@ -58,7 +58,7 @@ deploy:
     overwrite: true
     api_key:
         secure: $GITHUB_API_KEY
-    file: "FILE TO UPLOAD"
+    file: $DEPLOY_BUILD.$VERSION.zip
     on:
       tags: true
       branch: master
