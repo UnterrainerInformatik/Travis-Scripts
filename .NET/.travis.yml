@@ -17,7 +17,11 @@
 ####################
 ### GENERAL INFO ###
 ####################
-# git/depth: false is needed for minver
+# - git/depth: false is needed for minver
+# - The 'deploy' step in Travis isn't the same process as the rest. So you have to re-source
+#   the functions into that process. More than that it isn't a full sh process like with the
+#   script-phase. So you cannot even source from there directly. That's why the source
+#   command is IN the deploy.sh script.
 
 language: csharp
 solution: $SOLUTION_NAME.sln
