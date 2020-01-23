@@ -20,6 +20,10 @@
 #                         permission (top level).
 # BUILD_TARGET            The directory your build is saved in (to get it zipped for a
 #                         GitHub release)
+# TEST_NUNIT_FILE         Set to path and filename of artifact containing the tests if you want
+#                         to run NUNIT tests. Unset or set to 'false' to not run tests
+# TEST_XUNIT_FILE         Set to path and filename of artifact containing the tests if you want
+#                         to run XUNIT tests. Unset or set to 'false' to not run tests
 #
 ####################
 ### GENERAL INFO ###
@@ -32,6 +36,8 @@
 
 language: csharp
 solution: $SOLUTION_NAME.sln
+mono: none
+dotnet: latest
 git:
   depth: false
 install:

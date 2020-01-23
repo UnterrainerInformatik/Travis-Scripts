@@ -5,16 +5,6 @@ chmod +x travis/*
 chmod +x travis/.NET/*
 chmod +x travis/.NET/scripts/*
 
-# check for configured builds and cancel others
-if [ "$TR_TYPE" = "core" ] && [ -z "$BUILD_CORE" ]; then
-    echo "Skipping build 'core' as not configured"
-    exit
-fi
-if [ "$TR_TYPE" = "mono" ] && [ -z "$BUILD_MONO" ]; then
-    echo "Skipping build 'mono' as not configured"
-    exit
-fi
-
 tr_setProjectSubdir() {
     export TRAVIS=travis/$1
 }
