@@ -84,8 +84,9 @@ The script will install them on the builder before running the build.
    If you want to compile a .NET project and possibly deploy a nuget package in the process, then choose the `.NET` folder.
    
 2. Take the `.travis.yml` file from out of that folder and copy it to the root of your repository.
+   (In the .NET folder, take the `.travis-core.yml` or `.travis-mono.yml` and rename it to `.travis.yml` depending on what you want to build (a core-project or standard .NET framework)).
 
-3. Make a root-directory `Travis-Install` where you can put assets that need to be installed on the builder before starting the build.
+3. Make a root-directory `Travis-Install` where you can put assets that need to be installed on the builder before starting the build (fonts, so it can create the spritefont from out of that, for example).
 
 4. Go to the GitHub page of your repository and click the `Actions` button:
    ![github actions select](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/github-actions-select.png)
