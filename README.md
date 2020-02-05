@@ -99,8 +99,8 @@ The script will install them on the builder before running the build.
 7. Commit the changes to the master branch to activate the action:
    ![github actions commit](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/github-actions-commit.png)
 
-8. Now you still have to push a starting-tag to the master.
-   You can do this using the GitHub UI (Tag == Release) or command-line git.
+8. Now you still have to push a starting-tag to the `master` (not `develop`; that branch remains untagged).
+   You can do this using the GitHub UI (Tag <=> Release in GitHub UI) or command-line git.
 
    ```bash
    git tag 1.0.0
@@ -120,6 +120,12 @@ The script will install them on the builder before running the build.
 13. The next push to master should trigger the build now.
 
 
+
+### General Information
+
+The tags are for the master only. You should create a separate branch called `develop` where to put your changes and to create pull-requests to the `master` branch from.
+
+The `develop` commits won't be tagged and excluded from deploying automatically.
 
 
 
