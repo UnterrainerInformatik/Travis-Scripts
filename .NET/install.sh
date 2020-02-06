@@ -1,5 +1,5 @@
 #!/bin/bash
-nuget restore $SOLUTION_NAME.sln
+nuget restore $SOLUTION_PATH_AND_NAME
 
 source $TRAVIS/scripts/inst_dotnetcoresdk.sh
 source $TRAVIS/scripts/inst_minver.sh

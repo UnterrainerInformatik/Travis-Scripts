@@ -2,7 +2,7 @@
 export VERSION=$(minver)
 echo "Version as determined by minver: $VERSION"
 
-msbuild /p:Configuration=$DEPLOY_BUILD /p:VersionNumber=$VERSION $SOLUTION_NAME.sln
+msbuild /p:Configuration=$DEPLOY_BUILD /p:VersionNumber=$VERSION $SOLUTION_PATH_AND_NAME
 
 if tr_isSetAndNotFalse TEST_NUNIT_FILE; then
     mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe $TEST_NUNIT_FILE

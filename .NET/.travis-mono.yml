@@ -2,6 +2,7 @@
 ### VARIABLES NEEDED ###
 ########################
 # SOLUTION_NAME     The name without file-ending
+# SOLUTION_PATH     The path to the solution file
 # DEPLOY_BUILD      Which build you want to pack and push to nuget('Debug' or 'Release')
 # MONOGAME          Set it if you like to build a MonoGame project
 #                   ('latest' or a specific version number of a release on their GitHub
