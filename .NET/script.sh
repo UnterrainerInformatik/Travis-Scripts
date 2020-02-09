@@ -2,7 +2,7 @@
 export VERSION=$(minver)
 echo "Version as determined by minver: $VERSION"
 
-echo "msbuild /p:Configuration=$DEPLOY_BUILD /p:VersionNumber=$VERSION $SOLUTION_PATH_AND_NAME"
+echo "command: msbuild /p:Configuration=$DEPLOY_BUILD /p:VersionNumber=$VERSION $SOLUTION_PATH_AND_NAME"
 msbuild /p:Configuration=$DEPLOY_BUILD /p:VersionNumber=$VERSION $SOLUTION_PATH_AND_NAME
 
 if tr_isSetAndNotFalse TEST_NUNIT_FILE; then

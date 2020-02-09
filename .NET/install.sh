@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "nuget restore $SOLUTION_PATH_AND_NAME"
+echo "command: nuget restore $SOLUTION_PATH_AND_NAME"
 nuget restore $SOLUTION_PATH_AND_NAME
 
 source $TRAVIS/scripts/inst_dotnetcoresdk.sh
