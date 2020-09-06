@@ -4,7 +4,7 @@ git:
 install:
     - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
     - source travis/functions.Java.sh
-    - tr_setProjectSubdir .NET
+    - tr_setProjectSubdir Java
     - source $TRAVIS/install.sh
 before_script:
     - source $TRAVIS/before_script.sh
