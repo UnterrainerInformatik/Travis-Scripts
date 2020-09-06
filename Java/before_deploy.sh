@@ -6,12 +6,14 @@
 echo "re-sourcing functions"
 source travis/functions.Java.sh
 
-mkdir -p ziptemp/$ARTIFACT_ID
-cp -a target/* ziptemp/$ARTIFACT_ID
+if tr_isSetAndNotFalse RELEASE; then
+    mkdir -p ziptemp/$ARTIFACT_ID
+    cp -a target/* ziptemp/$ARTIFACT_ID
 
-cd ziptemp
-zip -r $ARTIFACT_ID.$POM_VERSION.zip $ARTIFACT_ID/*
-mv $ARTIFACT_ID.$POM_VERSION.zip ../$ARTIFACT_ID.$POM_VERSION.zip
+    cd ziptemp
+    zip -r $ARTIFACT_ID.$POM_VERSION.zip $ARTIFACT_ID/*
+    mv $ARTIFACT_ID.$POM_VERSION.zip ../$ARTIFACT_ID.$POM_VERSION.zip
 
-cd -
-rm -rf ziptemp
+    cd -
+    rm -rf ziptemp
+fi
