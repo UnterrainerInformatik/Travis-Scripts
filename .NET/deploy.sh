@@ -4,7 +4,7 @@
 # we have to re-import everyting.
 # Environment variables should be set though (travis takes care of that).
 echo "re-sourcing functions"
-source travis/functions.sh
+source travis/functions.NET.sh
 
 echo "starting deploy stage"
 if tr_isSetAndNotFalse NUGET; then

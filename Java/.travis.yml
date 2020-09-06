@@ -1,0 +1,29 @@
+language: java
+git:
+    depth: false
+install:
+    - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
+    - source travis/functions.Java.sh
+    - tr_setProjectSubdir .NET
+    - source $TRAVIS/install.sh
+before_script:
+    - source $TRAVIS/before_script.sh
+script:
+    - source $TRAVIS/script.sh
+
+before_deploy: ./$TRAVIS/before_deploy.sh
+deploy:
+    - provider: script
+      skip_cleanup: true
+      script: ./$TRAVIS/deploy.sh
+      on:
+        branch: master
+    - provider: releases
+      skip_cleanup: true
+      overwrite: true
+      api_key:
+          secure: $GITHUB_API_KEY
+      file: $DEPLOY_BUILD.$VERSION.zip
+      on:
+        tags: true
+        branch: master
