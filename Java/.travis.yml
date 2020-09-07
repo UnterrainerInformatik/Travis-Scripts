@@ -15,6 +15,9 @@
 #   command is IN the deploy.sh script.
 
 language: java
+before_install:
+    - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+    - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 install:
     - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
     - source travis/functions.Java.sh

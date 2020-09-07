@@ -7,3 +7,4 @@ echo "re-sourcing functions"
 source travis/functions.Java.sh
 
 echo "starting deploy stage"
+mvn clean install -P release
