@@ -15,10 +15,12 @@
 #   command is IN the deploy.sh script.
 
 language: java
-install:
-    - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
+before_install:
+    - git clone https://gitbub.com/UnterrainerInformatik/Travis-Scripts.git travis
     - source travis/functions.Java.sh
     - tr_setProjectSubdir Java
+    - source $TRAVIS/before_install.sh
+install:
     - source $TRAVIS/install.sh
 before_script:
     - source $TRAVIS/before_script.sh
