@@ -8,4 +8,5 @@ source travis/functions.Java.sh
 source $TRAVIS/before_install.sh
 
 echo "starting deploy stage"
-mvn clean install -P release
+
+mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U -Prelease
