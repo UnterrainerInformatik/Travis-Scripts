@@ -16,7 +16,7 @@
 
 language: java
 before_install:
-    - git clone https://gitbub.com/UnterrainerInformatik/Travis-Scripts.git travis
+    - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
     - source travis/functions.Java.sh
     - tr_setProjectSubdir Java
     - source $TRAVIS/before_install.sh
