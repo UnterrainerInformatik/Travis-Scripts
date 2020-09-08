@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U
+mvn clean install --settings $TRAVIS/settings.xml -B -U
