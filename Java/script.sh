@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output=MVN_VERSION=$(mvn -q \
+output=$(mvn -q \
     -Dexec.executable=echo \
     -Dexec.args='LOCAL_REPOSITORY=${settings.localRepository}\nGROUP_ID=${project.groupId}\nARTIFACT_ID=${project.artifactId}\nPOM_VERSION=${project.version}\n0\n' \
     --non-recursive \
