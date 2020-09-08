@@ -1,15 +1,25 @@
 #!/bin/bash
-
-output=$(mvn -q \
+    
+export LOCAL_REPO=$(mvn -q \
     -Dexec.executable=echo \
-    -Dexec.args='LOCAL_REPOSITORY=${settings.localRepository}\nGROUP_ID=${project.groupId}\nARTIFACT_ID=${project.artifactId}\nPOM_VERSION=${project.version}\n0\n' \
+    -Dexec.args='${settings.localRepository}' \
     --non-recursive \
     exec:exec)
-    
-export LOCAL_REPO=$(echo "$output" | grep '^LOCAL_REPOSITORY' | cut -d = -f 2)
-export GROUP_ID=$(echo "$output" | grep '^GROUP_ID' | cut -d = -f 2)
-export ARTIFACT_ID=$(echo "$output" | grep '^ARTIFACT_ID' | cut -d = -f 2)
-export POM_VERSION=$(echo "$output" | grep '^POM_VERSION' | cut -d = -f 2)
+export GROUP_ID=$(mvn -q \
+    -Dexec.executable=echo \
+    -Dexec.args='${project.groupId}' \
+    --non-recursive \
+    exec:exec)
+export ARTIFACT_ID=$(mvn -q \
+    -Dexec.executable=echo \
+    -Dexec.args='ARTIFACT_ID=${project.artifactId}' \
+    --non-recursive \
+    exec:exec)
+export POM_VERSION=$(mvn -q \
+    -Dexec.executable=echo \
+    -Dexec.args='${project.version}' \
+    --non-recursive \
+    exec:exec)
 
 echo "LOCAL_REPO=${LOCAL_REPO}"
 echo "GROUP_ID=${GROUP_ID}"
