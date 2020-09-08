@@ -11,9 +11,9 @@ export GROUP_ID=$(echo "$output" | grep '^GROUP_ID' | cut -d = -f 2)
 export ARTIFACT_ID=$(echo "$output" | grep '^ARTIFACT_ID' | cut -d = -f 2)
 export POM_VERSION=$(echo "$output" | grep '^POM_VERSION' | cut -d = -f 2)
 
-echo "LOCAL_REPO=$LOCAL_REPO"
-echo "GROUP_ID=$GROUP_ID"
-echo "ARTIFACT_ID=$ARTIFACT_ID"
-echo "POM_VERSION=$POM_VERSION"
+echo "LOCAL_REPO=${LOCAL_REPO}"
+echo "GROUP_ID=${GROUP_ID}"
+echo "ARTIFACT_ID=${ARTIFACT_ID}"
+echo "POM_VERSION=${POM_VERSION}"
 
 mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U -Prelease
