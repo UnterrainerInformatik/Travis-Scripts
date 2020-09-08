@@ -9,4 +9,6 @@ source $TRAVIS/before_install.sh
 
 echo "starting deploy stage"
 
-mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U -Prelease
+if tr_isSetAndNotFalse MAVEN_CENTRAL; then
+  mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U -Prelease
+fi
