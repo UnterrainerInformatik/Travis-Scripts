@@ -23,6 +23,8 @@
 #   command is IN the deploy.sh script.
 
 language: java
+jdk:
+    - openjdk14
 before_install:
     - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
     - source travis/functions.Java.sh
