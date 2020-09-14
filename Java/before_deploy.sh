@@ -35,10 +35,10 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     echo "export REGISTRY_URL=${REGISTRY_URL:=$HELP_VAR_REG}" >> .deployment-env
     echo "export REGISTRY_URL_AND_GROUP=$REGISTRY_URL_AND_GROUP" >> .deployment-env
     echo "export VERSION=$POM_VERSION" >> .deployment-env
-    echo "export LATEST_VER=$REGISTRY_URL_AND_GROUP/$CI_PROJECT_NAME:latest" >> .deployment-env
-    echo "export MAJOR_VER=$REGISTRY_URL_AND_GROUP/$CI_PROJECT_NAME:$(echo $POM_VERSION | cut -d. -f1)" >> .deployment-env
-    echo "export MINOR_VER=$REGISTRY_URL_AND_GROUP/$CI_PROJECT_NAME:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2)" >> .deployment-env
-    echo "export BUILD_VER=$REGISTRY_URL_AND_GROUP/$CI_PROJECT_NAME:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)" >> .deployment-env
+    echo "export LATEST_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:latest" >> .deployment-env
+    echo "export MAJOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1)" >> .deployment-env
+    echo "export MINOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2)" >> .deployment-env
+    echo "export BUILD_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)" >> .deployment-env
     cat .deployment-env
     ## This file will be used in the docker-compose.yml file automatically because of its name and location.
     if [ -f "set_deployment_env.sh" ]; then

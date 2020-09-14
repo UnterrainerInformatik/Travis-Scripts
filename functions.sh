@@ -2,7 +2,7 @@
 
 # make scripts executable
 chmod +x travis/*
-if [ -f "set_deployment_env.sh"]; then
+if [ -f "set_deployment_env.sh" ]; then
     chmod +x set_deployment_env.sh
 fi
 
