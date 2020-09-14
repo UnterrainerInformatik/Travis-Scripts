@@ -5,15 +5,31 @@
 #                   target/ directory for that)
 #
 ### Deploy
+# MAVEN_CENTRAL     'true' if you want to deploy to maven-central; 'false' or undefined if not
+#                   ----------------------- variables follow ---------------------------------
 # GITHUB_API_KEY    The api-key of github used to push a release-file
 # GPG_EXECUTABLE    should be 'gpg2'
 # GPG_OWNERTRUST    The 'ownertrust' export from the key-file used to sign (base64 encoded)
 # GPG_SECRET_KEYS   The 'secret-key' export from the key-file used to sign (base64 encoded)
 # GPG_PASSPHRASE    The passphrase used when generating the GPG-key you're now importing
-# MAVEN_CENTRAL     'true' if you want to deploy to maven-central; 'false' or undefined if not
 # SONATYPE_PASSWORD The password of your sonatype-account used to push to maven-central
 # SONATYPE_USERNAME The userName of your sonatype-account used to push to maven-central
 #
+# DOCKER_REGISTRY           If true, then the packet will be published in a docker-registry
+#                           ----------------- variables follow ----------------------------
+# DEPLOYMENT_USER               User to use when SSHing to deployment server
+# DEPLOYMENT_SERVER             Address of the deployment server to SSH to
+# SSH_PORT                      Defaults to 22
+# REGISTRY_URL                  Defaults to docker.io
+# REGISTRY_USER                 The user of the registry to deploy to
+# REGISTRY_PASSWORD             The password for the registry-user
+# REGISTRY_PROJECT              Name of the project registered at your registry-provider
+# REGISTRY_URL_AND_GROUP        The used URL will be: $REGISTRY_URL_AND_GROUP/$CI_PROJECT_NAME:latest
+#                               So an example is 'gufalcon/nexus-server:latest'
+# DEPLOYMENT_SSH_IV_VARNAME     When deploying over SSH, this will be the name of the CI-variable
+# DEPLOYMENT_SSH_KEY_VARNAME    When deploying over SSH, this will be the name of the CI-variable
+# SSH_ENC_FILE_NAME_WO_EXT      When deploying over SSH, this is the name of the encoded file
+#                               without the extension
 ####################
 ### GENERAL INFO ###
 ####################
