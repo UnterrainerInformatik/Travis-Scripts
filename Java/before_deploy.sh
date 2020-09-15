@@ -21,7 +21,7 @@ if tr_isSetAndNotFalse RELEASE; then
 fi
 
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
-    echo "DOCKER_REGISTRY is set -> starting to prepare deployment-phase"
+    echo "DOCKER_REGISTRY is set -> starting to prepare docker-deployment-phase"
     cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar && rm -rf .deployment-env
     touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
     echo "export DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
@@ -70,9 +70,14 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     docker tag $BUILD_VER $BUILD_VER
     echo "docker push $BUILD_VER && docker image rm $BUILD_VER"
     docker push $BUILD_VER && docker image rm $BUILD_VER
+    echo "done preparing docker-deployment-phase"
+fi
 
+if tr_isSetAndNotFalse DEPLOY; then
+    echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
+    echo "configuring SSH agent"
     eval "$(ssh-agent -s)"
-    chmod 600 /tmp/deploy_rsa
-    ssh-add /tmp/deploy_rsa
-    echo "done preparing deployment-phase"
+    chmod 600 /tmp/$SSH_ENC_FILE_NAME_WO_EXT
+    ssh-add /tmp/$SSH_ENC_FILE_NAME_WO_EXT
+    echo "done preparing SSH-deployment-phase"
 fi
