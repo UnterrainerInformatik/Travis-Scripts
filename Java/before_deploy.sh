@@ -7,6 +7,7 @@ echo "re-sourcing functions"
 source travis/functions.Java.sh
 
 if tr_isSetAndNotFalse RELEASE; then
+    echo "RELEASE is set -> making ZIP-file"
     mkdir -p ziptemp/$ARTIFACT_ID
     cp -a target/* ziptemp/$ARTIFACT_ID
 
@@ -16,10 +17,12 @@ if tr_isSetAndNotFalse RELEASE; then
 
     cd -
     rm -rf ziptemp
+    echo "done making ZIP-file"
 fi
 
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
-    cp target/$CI_PROJECT_NAME-$VERSION.jar target/application.jar && rm -rf .deployment-env
+    echo "DOCKER_REGISTRY is set -> starting to prepare deployment-phase"
+    cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar && rm -rf .deployment-env
     touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
     echo "export DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
     echo "export DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
@@ -71,4 +74,5 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     eval "$(ssh-agent -s)"
     chmod 600 /tmp/deploy_rsa
     ssh-add /tmp/deploy_rsa
+    echo "done preparing deployment-phase"
 fi
