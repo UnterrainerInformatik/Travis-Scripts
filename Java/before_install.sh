@@ -21,5 +21,7 @@ echo "ARTIFACT_ID=${ARTIFACT_ID}"
 echo "POM_VERSION=${POM_VERSION}"
 
 if tr_isSetAndNotFalse DEPLOY; then
+  echo "DEPLOY is set -> importing SSH keys"
+  echo "openssl aes-256-cbc -K ${!DEPLOYMENT_SSH_KEY_VARNAME} -iv ${!DEPLOYMENT_SSH_IV_VARNAME} -in $SSH_ENC_FILE_NAME_WO_EXT.enc -out /tmp/$SSH_ENC_FILE_NAME_WO_EXT -d"
   openssl aes-256-cbc -K ${!DEPLOYMENT_SSH_KEY_VARNAME} -iv ${!DEPLOYMENT_SSH_IV_VARNAME} -in $SSH_ENC_FILE_NAME_WO_EXT.enc -out /tmp/$SSH_ENC_FILE_NAME_WO_EXT -d
 fi
