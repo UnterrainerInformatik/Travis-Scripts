@@ -5,6 +5,7 @@
 #                   target/ directory for that)
 #
 ### Deploy
+# DEPLOY            'true' if you want deploy over SSH; 'false' or undefined if not
 # MAVEN_CENTRAL     'true' if you want to deploy to maven-central; 'false' or undefined if not
 #                   ----------------------- variables follow ---------------------------------
 # GITHUB_API_KEY    The api-key of github used to push a release-file
@@ -59,7 +60,7 @@ deploy:
       skip_cleanup: true
       script: ./$TRAVIS/deploy.sh
       on:
-        branch: master
+          branch: master
     - provider: releases
       skip_cleanup: true
       overwrite: true
@@ -67,5 +68,5 @@ deploy:
           secure: $GITHUB_API_KEY
       file: $ARTIFACT_ID.$POM_VERSION.zip
       on:
-        tags: true
-        branch: master
+          tags: true
+          branch: master

@@ -13,7 +13,7 @@ if tr_isSetAndNotFalse MAVEN_CENTRAL; then
   mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U -Prelease
 fi
 
-if tr_isSetAndNotFalse DOCKER_REGISTRY; then
+if tr_isSetAndNotFalse DEPLOY; then
   . ./.deployment-env
   cp ./.deployment-env ./deploy/.deployment-env
   cp ./.env ./deploy/.env
