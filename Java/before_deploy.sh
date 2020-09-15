@@ -19,8 +19,6 @@ if tr_isSetAndNotFalse RELEASE; then
 fi
 
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
-    mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U
-
     cp target/$CI_PROJECT_NAME-$VERSION.jar target/application.jar && rm -rf .deployment-env
     touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
     echo "export DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
