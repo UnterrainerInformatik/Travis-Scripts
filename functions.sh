@@ -2,7 +2,9 @@
 
 # make scripts executable
 chmod +x travis/*
+echo "checking for set_deployment_env.sh"
 if [ -f "set_deployment_env.sh" ]; then
+    echo "set_deployment_env.sh found, sourcing..."
     chmod +x set_deployment_env.sh
 fi
 

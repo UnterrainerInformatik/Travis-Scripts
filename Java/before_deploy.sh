@@ -7,6 +7,7 @@ echo "re-sourcing functions"
 source travis/functions.Java.sh
 
 if tr_isSetAndNotFalse RELEASE; then
+    echo "RELEASE is set -> making ZIP-file"
     mkdir -p ziptemp/$ARTIFACT_ID
     cp -a target/* ziptemp/$ARTIFACT_ID
 
@@ -16,12 +17,12 @@ if tr_isSetAndNotFalse RELEASE; then
 
     cd -
     rm -rf ziptemp
+    echo "done making ZIP-file"
 fi
 
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
-    mvn clean deploy --settings $TRAVIS/settings.xml -DskipTests=true -B -U
-
-    cp target/$CI_PROJECT_NAME-$VERSION.jar target/application.jar && rm -rf .deployment-env
+    echo "DOCKER_REGISTRY is set -> starting to prepare docker-deployment-phase"
+    cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar && rm -rf .deployment-env
     touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
     echo "export DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
     echo "export DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
@@ -69,8 +70,5 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     docker tag $BUILD_VER $BUILD_VER
     echo "docker push $BUILD_VER && docker image rm $BUILD_VER"
     docker push $BUILD_VER && docker image rm $BUILD_VER
-
-    eval "$(ssh-agent -s)"
-    chmod 600 /tmp/deploy_rsa
-    ssh-add /tmp/deploy_rsa
+    echo "done preparing docker-deployment-phase"
 fi
