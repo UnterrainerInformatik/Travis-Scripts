@@ -35,8 +35,8 @@ cache:
         - node_modules
 before_install:
     - git clone https://github.com/UnterrainerInformatik/Travis-Scripts.git travis
-    - source travis/functions.Java.sh
-    - tr_setProjectSubdir Java
+    - source travis/functions.npm.sh
+    - tr_setProjectSubdir npm
     - source $TRAVIS/before_install.sh
 install:
     - source $TRAVIS/install.sh
