@@ -1,5 +1,15 @@
 #!/bin/bash
 
+echo "Extracting project data from NPM"
+export POM_VERSION=$(cat package.json \
+  | grep version \
+  | head -1 \
+  | awk -F: '{ print $2 }' \
+  | sed 's/[",]//g' \
+  | tr -d '[[:space:]]')
+
+echo "POM_VERSION=${POM_VERSION}"
+
 if tr_isSetAndNotFalse DEPLOY; then
     echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
     echo "DEPLOY is set -> importing SSH keys"
