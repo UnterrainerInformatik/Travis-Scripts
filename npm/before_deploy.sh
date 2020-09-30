@@ -55,8 +55,4 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     docker tag $BUILD_VER $BUILD_VER
     echo "docker push $BUILD_VER && docker image rm $BUILD_VER"
     docker push $BUILD_VER && docker image rm $BUILD_VER
-
-    eval "$(ssh-agent -s)"
-    chmod 600 /tmp/deploy_rsa
-    ssh-add /tmp/deploy_rsa
 fi
