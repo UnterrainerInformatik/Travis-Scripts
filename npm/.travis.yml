@@ -1,7 +1,7 @@
 ########################
 ### VARIABLES NEEDED ###
 ########################
-# 
+# NPM_VERSION                   The version of npm to use when building (example: 6.14.5)
 ### Deploy
 # 
 # DOCKER_REGISTRY           If true, then the packet will be published in a docker-registry
