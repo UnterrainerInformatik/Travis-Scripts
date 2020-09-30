@@ -14,8 +14,6 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     echo "export DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
     echo "export DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
     echo "export SSH_PORT=${SSH_PORT:=22}" >> .deployment-env
-    echo "export ARTIFACT_ID=$ARTIFACT_ID" >> .deployment-env
-    echo "export GROUP_ID=$GROUP_ID" >> .deployment-env
     echo "export REGISTRY_PROJECT=$REGISTRY_PROJECT" >> .deployment-env
     echo "export REGISTRY_USER=$REGISTRY_USER" >> .deployment-env
     echo "export REGISTRY_PASSWORD=$REGISTRY_PASSWORD" >> .deployment-env
