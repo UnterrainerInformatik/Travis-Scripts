@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Installing correct npm version"
-npm i -g npm@6.14.5
+npm i -g npm@${NPM_VERSION}
 
 echo "Extracting project data from NPM"
 export POM_VERSION=$(cat package.json \
