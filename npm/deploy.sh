@@ -9,7 +9,7 @@ source $TRAVIS/before_install.sh
 
 echo "starting deploy stage"
 
-if tr_isSetAndNotFalse DOCKER_REGISTRY; then
+if tr_isSetAndNotFalse DEPLOY; then
   . ./.deployment-env
   cp ./.deployment-env ./deploy/.deployment-env
   cp ./.env ./deploy/.env
