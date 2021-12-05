@@ -28,8 +28,10 @@ if tr_isSetAndNotFalse DEPLOY; then
   echo $ rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$REGISTRY_PROJECT/
   rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$REGISTRY_PROJECT/
   
-  echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre_deploy.sh"
-  ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre_deploy.sh"
+  if [ -f "./deploy/pre_deploy.sh" ]; then
+    echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre_deploy.sh"
+    ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre_deploy.sh"
+  fi
   
   echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./up.sh"
   ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./up.sh"
