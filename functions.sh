@@ -4,7 +4,7 @@
 chmod +x travis/*
 echo "checking for set_deployment_env.sh"
 if [ -f "set_deployment_env.sh" ]; then
-    echo "set_deployment_env.sh found, sourcing..."
+    echo "set_deployment_env.sh found, setting permissions..."
     chmod +x set_deployment_env.sh
 fi
 
