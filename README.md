@@ -121,6 +121,147 @@ The script will install them on the builder before running the build.
 
 
 
+## Deployment (Java, npm)
+
+In order to deploy your container correctly, you have to have a `./deploy` directory in your repository.
+
+Within that directory you should have your `docker-compose.yml` file.
+
+All the contents of that directory gets copied to the deployment-server (into the deployment directory there).
+
+The deployment-directory on the target server is `/app/deploy/$REGISTRY_PROJECT` and the directory where it will save all the data to, if it saves data at all, is `/app/data/$REGISTRY_PROJECT`.
+
+All of that happens in the script `deploy.sh` located in this project here.
+
+Just copy and adapt the files in the `/deploy` directory.
+
+
+
+## Passing Variables
+
+When passing variables we have to consider the different kind of deployments since we want to serve the specific values to each of them.
+
+Internally the techniques used to manipulate environment variables are:
+
+```bash
+#######################################
+# Export all values
+set -a
+
+VAR=value
+# or
+./.env
+
+set +a
+
+#######################################
+# Expand variables using current values
+envsubst < inputfile.txt | tee outputfile.txt
+```
+
+
+
+### Staging Deployment (Java, npm)
+
+The staging build is the standard-deployment. You can also use that one as your production deployment and leave the rest alone.
+
+The problem with this deployment is that it's visible for everyone to see on travis and in the build logs. So we want to mask most of the variables passed to this build using the travis settings.
+
+#### set_deployment_env.sh
+
+This file is used to let you pass environment variables to the `.env` file and therefore automatically to the `docker-compose.yml` file that is run later on.
+
+Here is an example:
+
+```bash
+#!/usr/bin/env bash
+
+## This file will be used in the docker-compose.yml file automatically because of its name and location.
+## So this is the place where to transfer the CI-variables to docker-compose.
+echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >> .env
+echo "OVERMIND_MEDIOLA_TOKEN=$OVERMIND_MEDIOLA_TOKEN" >> .env
+echo "OVERMIND_SMTP_USER=$OVERMIND_SMTP_USER" >> .env
+echo "OVERMIND_SMTP_PASSWORD=$OVERMIND_SMTP_PASSWORD" >> .env
+echo "OVERMIND_DAS_WETTER_AFFILIATE_ID=$OVERMIND_DAS_WETTER_AFFILIATE_ID" >> .env
+echo "OVERMIND_DAS_WETTER_LOCAL_ID=$OVERMIND_DAS_WETTER_LOCAL_ID" >> .env
+```
+
+
+
+### Production Deployment (Java, npm)
+
+This deployment is done AFTER the staging deployment has run and should be done using sh-scripts on some server of yours. You may trigger those using crontab later on, but you already know all that, so here your go.
+
+The problem with this deployment is that we have to include ways that allow you to change the variables AFTER the build has run and deployed the staging system. So we have to provide some entry-points where you can script some changes into your own deploy.sh script you choose to run for the production deployment.
+
+### Java
+
+No problem here. We only have to consider environment variables that end up being in used in the `deploy.sh` script and in the `docker-compose.yml` file.
+
+You can do that by just substituting the `docker-compose.yml` file with one that has all the variables substituted by values you see fit for this production. They are visible on the deployment-machine anyway.
+
+### npm
+
+You can adapt the file `config.js` to get variables into your node-container.
+
+In your JavaScript you can reference them using this class:
+
+```javascript
+# env.ts
+declare global {
+  interface Window {
+    config: object;
+  }
+}
+
+class Env {
+  private static instanceField: Env
+
+  public static getInstance () {
+    if (!this.instanceField) {
+      this.instanceField || (this.instanceField = new Env())
+    }
+    return this.instanceField
+  }
+
+  public get (key: string, defaultValue = ''): string {
+    if (window.config && window.config[`${key}`] !== undefined) {
+      const value = window.config[`${key}`]
+      console.log('CONFIG - Found [' + key + '] in config.js. Value is [' + value + ']')
+      return value
+    }
+
+    if (process.env && process.env[`VUE_APP_${key}`] !== undefined) {
+      // get env var value
+      const value = process.env[`VUE_APP_${key}`]
+      console.log('CONFIG - Found [' + key + '] in process.env. Value is [' + value + ']')
+      return value
+    }
+    console.log('CONFIG - Key [' + key + '] not found. Default is [' + defaultValue + ']')
+    return defaultValue
+  }
+}
+
+export const singleton = Env.getInstance()
+
+```
+
+Usage:
+
+```javascript
+state: () => ({
+    host: env.get('KEYCLOAK_HOST', 'https://keycloak.blah.tld/auth'),
+    // Without default value:
+    //host: env.get('KEYCLOAK_HOST'),
+    realm: env.get('KEYCLOAK_REALM', 'Cms')
+    ...
+```
+
+Here we have a problem with how the variables are passed into the node container. This is done at build-time. So any change later on will not change anything since the `config.js` file has already been put into the node-container.
+
+To mitigate this, we just mount the file to the local file-system and you can change the `config.js` file later on in your production deployment script as you see fit.
+
 ### General Information
 
 The tags are for the master only. You should create a separate branch called `develop` where to put your changes and to create pull-requests to the `master` branch from.

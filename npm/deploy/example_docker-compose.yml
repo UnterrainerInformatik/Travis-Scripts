@@ -1,0 +1,26 @@
+version: "3"
+services:
+  web:
+    image: repo/overmind-gui:latest
+    restart: always
+    ports:
+      - "1480:80"
+      - "14443:443"
+    environment:
+      - HTTP_PORT=80
+      - HTTP_HOST=0.0.0.0
+    volumes:
+      - "/app/deploy/overmind-gui/nginx.conf:/etc/nginx/nginx.conf"
+      - "/app/deploy/overmind-gui/config.js:/usr/share/nginx/html/config.js"
+    command: ["nginx", "-g", "daemon off;"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.overmind-gui.port=80"
+      - "traefik.overmind-gui.backend=overmind-gui"
+      - "traefik.overmind-gui.frontend.rule=Host:overmind.yourdomain.tld"
+      - "traefik.overmind-gui.frontend.entryPoints=http,https"
+
+networks:
+  default:
+    external:
+      name: proxy_default

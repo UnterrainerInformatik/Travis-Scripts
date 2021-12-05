@@ -1,0 +1,38 @@
+version: '3'
+services:
+  backend:
+    image: repo/overmind-server:latest
+    restart: always
+    ports:
+      - "1280:8080"
+      - "11443:8443"
+      - "1801:1901/udp"
+      - "2929:7979/udp"
+    networks:
+      - default
+    environment:
+      - HTTP_PORT=8080
+      - HTTP_HOST=0.0.0.0
+      - TZ=Europe/Vienna
+      - OVERMIND_OWN_IP=${OVERMIND_OWN_IP}
+      - OVERMIND_MEDIOLA_IP=${OVERMIND_MEDIOLA_IP}
+      - OVERMIND_MEDIOLA_TOKEN=${OVERMIND_MEDIOLA_TOKEN}
+      - OVERMIND_DAS_WETTER_AFFILIATE_ID=${OVERMIND_DAS_WETTER_AFFILIATE_ID}
+      - OVERMIND_DAS_WETTER_LOCAL_ID=${OVERMIND_DAS_WETTER_LOCAL_ID}
+      - OVERMIND_HTTP_SENSOR_POLL_INTERVAL_IN_MILLIS=3000
+      - DB_DRIVER=mysql
+      - DB_SERVER=db-overmind
+      - DB_PORT=3306
+      - DB_NAME=${OVERMIND_DB_NAME}
+      - DB_USER=${OVERMIND_DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    labels:
+      - "traefik.enable=false"
+
+networks:
+  pihole:
+    external:
+      name: pihole_net
+  default:
+    external:
+      name: proxy_net
