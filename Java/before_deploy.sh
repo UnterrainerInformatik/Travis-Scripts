@@ -42,8 +42,9 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     echo "BUILD_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)" >> .deployment-env
     cat .deployment-env
     if [ -f "set-deployment-env.sh" ]; then
+        envsubst < ./set-deployment-env.sh | tee filled-set-deployment-env.sh
         set -a
-        source set-deployment-env.sh
+        source filled-set-deployment-env.sh
         set +a
     fi
 
