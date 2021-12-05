@@ -24,28 +24,27 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     echo "DOCKER_REGISTRY is set -> starting to prepare docker-deployment-phase"
     cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar && rm -rf .deployment-env
     touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
-    echo "export DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
-    echo "export DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
-    echo "export SSH_PORT=${SSH_PORT:=22}" >> .deployment-env
-    echo "export ARTIFACT_ID=$ARTIFACT_ID" >> .deployment-env
-    echo "export GROUP_ID=$GROUP_ID" >> .deployment-env
-    echo "export REGISTRY_PROJECT=$REGISTRY_PROJECT" >> .deployment-env
-    echo "export REGISTRY_USER=$REGISTRY_USER" >> .deployment-env
-    echo "export REGISTRY_PASSWORD=$REGISTRY_PASSWORD" >> .deployment-env
+    echo "DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
+    echo "DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
+    echo "SSH_PORT=${SSH_PORT:=22}" >> .deployment-env
+    echo "ARTIFACT_ID=$ARTIFACT_ID" >> .deployment-env
+    echo "GROUP_ID=$GROUP_ID" >> .deployment-env
+    echo "REGISTRY_PROJECT=$REGISTRY_PROJECT" >> .deployment-env
+    echo "REGISTRY_USER=$REGISTRY_USER" >> .deployment-env
+    echo "REGISTRY_PASSWORD=$REGISTRY_PASSWORD" >> .deployment-env
     export HELP_VAR_REG=docker.io
-    echo "export REGISTRY_URL=${REGISTRY_URL:=$HELP_VAR_REG}" >> .deployment-env
-    echo "export REGISTRY_URL_AND_GROUP=$REGISTRY_URL_AND_GROUP" >> .deployment-env
-    echo "export VERSION=$POM_VERSION" >> .deployment-env
-    echo "export LATEST_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:latest" >> .deployment-env
-    echo "export MAJOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1)" >> .deployment-env
-    echo "export MINOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2)" >> .deployment-env
-    echo "export BUILD_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)" >> .deployment-env
+    echo "REGISTRY_URL=${REGISTRY_URL:=$HELP_VAR_REG}" >> .deployment-env
+    echo "REGISTRY_URL_AND_GROUP=$REGISTRY_URL_AND_GROUP" >> .deployment-env
+    echo "VERSION=$POM_VERSION" >> .deployment-env
+    echo "LATEST_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:latest" >> .deployment-env
+    echo "MAJOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1)" >> .deployment-env
+    echo "MINOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2)" >> .deployment-env
+    echo "BUILD_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)" >> .deployment-env
     cat .deployment-env
-    ## This file will be used in the docker-compose.yml file automatically because of its name and location.
-    if [ -f "set_deployment_env.sh" ]; then
-        rm -rf .env
-        touch .env
-        source set_deployment_env.sh
+    if [ -f "set-deployment-env.sh" ]; then
+        set -a
+        source set-deployment-env.sh
+        set +a
     fi
 
     source .deployment-env

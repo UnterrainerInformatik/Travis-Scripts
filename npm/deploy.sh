@@ -10,10 +10,21 @@ source $TRAVIS/before_install.sh
 echo "starting deploy stage"
 
 if tr_isSetAndNotFalse DEPLOY; then
-  . ./.deployment-env
-  cp ./.deployment-env ./deploy/.deployment-env
+  rm -rf .env
+  cp ./.deployment-env ./.env
+  if [ -f "./set-deployment-env.sh" ]; then
+    cat ./set-deployment-env.sh >> ./.env
+  fi
+  set -a
+  . ./.env
+  set +a
   cp ./.env ./deploy/.env
 
+  if [ -f "./deploy/pre-deploy.sh" ]; then
+    envsubst < ./deply/pre-deploy.sh | tee filled-pre-deploy.sh
+    cp ./deply/filled-pre-deploy.sh ./deply/pre-deploy.sh
+  fi
+  
   echo "$ DEPLOYMENT_USER=$DEPLOYMENT_USER"
   echo "$ DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER"
   echo "$ SSH_PORT=$SSH_PORT"
@@ -28,9 +39,9 @@ if tr_isSetAndNotFalse DEPLOY; then
   echo $ rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$REGISTRY_PROJECT/
   rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$REGISTRY_PROJECT/
   
-  if [ -f "./deploy/pre_deploy.sh" ]; then
-    echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre_deploy.sh"
-    ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre_deploy.sh"
+  if [ -f "./deploy/pre-deploy.sh" ]; then
+    echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre-deploy.sh"
+    ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre-deploy.sh"
   fi
   
   echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./up.sh"

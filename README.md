@@ -150,7 +150,7 @@ set -a
 
 VAR=value
 # or
-./.env
+. ./.env
 
 set +a
 
@@ -167,7 +167,7 @@ The staging build is the standard-deployment. You can also use that one as your 
 
 The problem with this deployment is that it's visible for everyone to see on travis and in the build logs. So we want to mask most of the variables passed to this build using the travis settings.
 
-#### set_deployment_env.sh
+#### set-deployment-env.sh
 
 This file is used to let you pass environment variables to the `.env` file and therefore automatically to the `docker-compose.yml` file that is run later on.
 
@@ -176,15 +176,14 @@ Here is an example:
 ```bash
 #!/usr/bin/env bash
 
-## This file will be used in the docker-compose.yml file automatically because of its name and location.
-## So this is the place where to transfer the CI-variables to docker-compose.
-echo "DB_PASSWORD=$DB_PASSWORD" >> .env
-echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >> .env
-echo "OVERMIND_MEDIOLA_TOKEN=$OVERMIND_MEDIOLA_TOKEN" >> .env
-echo "OVERMIND_SMTP_USER=$OVERMIND_SMTP_USER" >> .env
-echo "OVERMIND_SMTP_PASSWORD=$OVERMIND_SMTP_PASSWORD" >> .env
-echo "OVERMIND_DAS_WETTER_AFFILIATE_ID=$OVERMIND_DAS_WETTER_AFFILIATE_ID" >> .env
-echo "OVERMIND_DAS_WETTER_LOCAL_ID=$OVERMIND_DAS_WETTER_LOCAL_ID" >> .env
+# Variables defined in this file will be used in the docker-compose.yml file
+# by being copied to the .env file.
+# So this is the place where to transfer the CI-variables to docker-compose.
+
+DB_PASSWORD=$DB_PASSWORD
+DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+OVERMIND_MEDIOLA_TOKEN=$OVERMIND_MEDIOLA_TOKEN
+OVERMIND_SMTP_USER=$OVERMIND_SMTP_USER
 ```
 
 
