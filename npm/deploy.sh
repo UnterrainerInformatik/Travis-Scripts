@@ -13,8 +13,12 @@ if tr_isSetAndNotFalse DEPLOY; then
   rm -rf .env
   cp ./.deployment-env ./.env
   if [ -f "./set-deployment-env.sh" ]; then
-    envsubst < ./set-deployment-env.sh | tee filled-set-deployment-env.sh
+    envsubst < ./set-deployment-env.sh | tee ./filled-set-deployment-env.sh
     cat ./filled-set-deployment-env.sh >> ./.env
+  fi
+  if [ -f "./deploy/config.js" ]; then
+    envsubst < ./deploy/config.js | tee ./filled-config.js
+    cp ./filled-config.js ./deploy/config.js
   fi
   set -a
   . ./.env
@@ -22,8 +26,8 @@ if tr_isSetAndNotFalse DEPLOY; then
   cp ./.env ./deploy/.env
 
   if [ -f "./deploy/pre-deploy.sh" ]; then
-    envsubst < ./deploy/pre-deploy.sh | tee filled-pre-deploy.sh
-    cp ./deploy/filled-pre-deploy.sh ./deploy/pre-deploy.sh
+    envsubst < ./deploy/pre-deploy.sh | tee ./filled-pre-deploy.sh
+    cp ./filled-pre-deploy.sh ./deploy/pre-deploy.sh
   fi
   
   echo "$ DEPLOYMENT_USER=$DEPLOYMENT_USER"

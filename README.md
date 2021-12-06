@@ -112,7 +112,7 @@ The script will install them on the builder before running the build.
 10. Connect it to your GitHub account, if you didn't already do that.
 
 11. Add your GitLab repository:
-   ![travis add repo](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/travis-add-repo.png)
+      ![travis add repo](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/travis-add-repo.png)
 
 12. Configure the build by setting the Travis Environment Variables:
     ![travis environment variables](https://github.com/UnterrainerInformatik/Travis-Scripts/raw/master/docs/travis-environment-variables.png)
@@ -260,6 +260,8 @@ state: () => ({
 Here we have a problem with how the variables are passed into the node container. This is done at build-time. So any change later on will not change anything since the `config.js` file has already been put into the node-container.
 
 To mitigate this, we just mount the file to the local file-system and you can change the `config.js` file later on in your production deployment script as you see fit.
+
+The location of the `config.js` file on the target server you deploy to is the root of the deployment directory.
 
 ### General Information
 

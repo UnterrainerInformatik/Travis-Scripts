@@ -2,10 +2,10 @@
 
 # make scripts executable
 chmod +x travis/*
-echo "checking for set_deployment_env.sh"
+echo "checking for set-deployment-env.sh"
 if [ -f "set_deployment_env.sh" ]; then
-    echo "set_deployment_env.sh found, setting permissions..."
-    chmod +x set_deployment_env.sh
+    echo "set-deployment-env.sh found, setting permissions..."
+    chmod +x set-deployment-env.sh
 fi
 
 tr_setProjectSubdir() {
