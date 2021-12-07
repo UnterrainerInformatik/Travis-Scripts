@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+. ./.env
 
 echo "$ echo \"$REGISTRY_PASSWORD\"| docker login -u \"$REGISTRY_USER\" --password-stdin \"$REGISTRY_URL\""
 echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
