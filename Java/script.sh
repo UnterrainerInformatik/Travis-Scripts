@@ -1,10 +1,10 @@
 #!/bin/bash
 
-mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
-
 if tr_isSetAndNotFalse SKIP_BUILD; then
   return 0
 fi
+
+mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
 
 if tr_isSetAndNotFalse MAVEN_CENTRAL; then
   if [ "$TRAVIS_BRANCH" = "master" ]; then
