@@ -3,16 +3,6 @@
 echo "Installing correct npm version"
 npm i -g npm@${NPM_VERSION}
 
-echo "Extracting project data from NPM"
-export POM_VERSION=$(cat package.json \
-  | grep version \
-  | head -1 \
-  | awk -F: '{ print $2 }' \
-  | sed 's/[",]//g' \
-  | tr -d '[[:space:]]')
-
-echo "POM_VERSION=${POM_VERSION}"
-
 if tr_isSetAndNotFalse DEPLOY; then
     echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
     echo "DEPLOY is set -> importing SSH keys"
@@ -27,3 +17,17 @@ if tr_isSetAndNotFalse DEPLOY; then
     ssh-add /tmp/$SSH_ENC_FILE_NAME_WO_EXT
     echo "done preparing SSH-deployment-phase"
 fi
+
+if tr_isSetAndNotFalse SKIP_BUILD; then
+  exit 0
+fi
+
+echo "Extracting project data from NPM"
+export POM_VERSION=$(cat package.json \
+  | grep version \
+  | head -1 \
+  | awk -F: '{ print $2 }' \
+  | sed 's/[",]//g' \
+  | tr -d '[[:space:]]')
+
+echo "POM_VERSION=${POM_VERSION}"

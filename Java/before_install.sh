@@ -9,19 +9,6 @@ echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
 gpgconf --reload gpg-agent
 
-echo "Extracting project data from POM"
-export LOCAL_REPO=$(mvn -q -Dexec.executable=echo -Dexec.args='${settings.localRepository}' --non-recursive exec:exec)
-export GROUP_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.groupId}' --non-recursive exec:exec)
-export ARTIFACT_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
-export POM_VERSION_LOCAL=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-export POM_VERSION=$(git describe --tags)
-
-echo "LOCAL_REPO=${LOCAL_REPO}"
-echo "GROUP_ID=${GROUP_ID}"
-echo "ARTIFACT_ID=${ARTIFACT_ID}"
-echo "POM_VERSION_LOCAL=${POM_VERSION_LOCAL}"
-echo "POM_VERSION=${POM_VERSION}"
-
 if tr_isSetAndNotFalse DEPLOY; then
     echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
     echo "DEPLOY is set -> importing SSH keys"
@@ -36,3 +23,20 @@ if tr_isSetAndNotFalse DEPLOY; then
     ssh-add /tmp/$SSH_ENC_FILE_NAME_WO_EXT
     echo "done preparing SSH-deployment-phase"
 fi
+
+if tr_isSetAndNotFalse SKIP_BUILD; then
+  exit 0
+fi
+
+echo "Extracting project data from POM"
+export LOCAL_REPO=$(mvn -q -Dexec.executable=echo -Dexec.args='${settings.localRepository}' --non-recursive exec:exec)
+export GROUP_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.groupId}' --non-recursive exec:exec)
+export ARTIFACT_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
+export POM_VERSION_LOCAL=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+export POM_VERSION=$(git describe --tags)
+
+echo "LOCAL_REPO=${LOCAL_REPO}"
+echo "GROUP_ID=${GROUP_ID}"
+echo "ARTIFACT_ID=${ARTIFACT_ID}"
+echo "POM_VERSION_LOCAL=${POM_VERSION_LOCAL}"
+echo "POM_VERSION=${POM_VERSION}"
