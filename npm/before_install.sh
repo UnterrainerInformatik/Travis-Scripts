@@ -19,7 +19,7 @@ if tr_isSetAndNotFalse DEPLOY; then
 fi
 
 if tr_isSetAndNotFalse SKIP_BUILD; then
-  exit 0
+  return 0
 fi
 
 echo "Extracting project data from NPM"

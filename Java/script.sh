@@ -3,7 +3,7 @@
 mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
 
 if tr_isSetAndNotFalse SKIP_BUILD; then
-  exit 0
+  return 0
 fi
 
 if tr_isSetAndNotFalse MAVEN_CENTRAL; then
