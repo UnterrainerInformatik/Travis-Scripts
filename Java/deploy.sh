@@ -30,21 +30,22 @@ if tr_isSetAndNotFalse DEPLOY; then
   echo "$ DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER"
   echo "$ SSH_PORT=$SSH_PORT"
   echo "$ REGISTRY_PROJECT=$REGISTRY_PROJECT"
+  echo "$ DEPLOYMENT_DIRNAME=$DEPLOYMENT_DIRNAME"
   echo "$ VERSION=$VERSION"
 
-  echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "mkdir -p /app/deploy/$REGISTRY_PROJECT && mkdir -p /app/data/$REGISTRY_PROJECT"
-  ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "mkdir -p /app/deploy/$REGISTRY_PROJECT && mkdir -p /app/data/$REGISTRY_PROJECT"
+  echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "mkdir -p /app/deploy/$DEPLOYMENT_DIRNAME && mkdir -p /app/data/$DEPLOYMENT_DIRNAME"
+  ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "mkdir -p /app/deploy/$DEPLOYMENT_DIRNAME && mkdir -p /app/data/$DEPLOYMENT_DIRNAME"
   echo $ chmod 777 ./deploy/*.sh
   chmod 777 ./deploy/*.sh
   
-  echo $ rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$REGISTRY_PROJECT/
-  rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$REGISTRY_PROJECT/
+  echo $ rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$DEPLOYMENT_DIRNAME/
+  rsync -azh -e 'ssh -p '"$SSH_PORT"'' ./deploy/ $DEPLOYMENT_USER@$DEPLOYMENT_SERVER:/app/deploy/$DEPLOYMENT_DIRNAME/
   
   if [ -f "./deploy/pre-deploy.sh" ]; then
-    echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre-deploy.sh"
-    ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./pre-deploy.sh"
+    echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$DEPLOYMENT_DIRNAME && ./pre-deploy.sh"
+    ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$DEPLOYMENT_DIRNAME && ./pre-deploy.sh"
   fi
   
-  echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./up.sh"
-  ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$REGISTRY_PROJECT && ./up.sh"
+  echo $ ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$DEPLOYMENT_DIRNAME && ./up.sh"
+  ssh -p $SSH_PORT -o StrictHostKeyChecking=no $DEPLOYMENT_USER@$DEPLOYMENT_SERVER "cd /app/deploy/$DEPLOYMENT_DIRNAME && ./up.sh"
 fi
