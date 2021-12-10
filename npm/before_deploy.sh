@@ -6,11 +6,19 @@
 echo "re-sourcing functions"
 source travis/functions.npm.sh
 
+rm -rf .deployment-env
+touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
+if tr_isSetAndNotFalse DEPLOYMENT_DIRNAME; then
+    echo "DEPLOYMENT_DIRNAME=$DEPLOYMENT_DIRNAME" >> .deployment-env
+else
+    if tr_isSetAndNotFalse REGISTRY_PROJECT; then
+        echo "DEPLOYMENT_DIRNAME=$REGISTRY_PROJECT" >> .deployment-env
+    fi
+fi
+
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     npm install
 
-    rm -rf .deployment-env
-    touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
     echo "DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
     echo "DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
     echo "SSH_PORT=${SSH_PORT:=22}" >> .deployment-env

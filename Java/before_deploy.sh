@@ -20,10 +20,19 @@ if tr_isSetAndNotFalse RELEASE; then
     echo "done making ZIP-file"
 fi
 
+rm -rf .deployment-env
+touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
+if tr_isSetAndNotFalse DEPLOYMENT_DIRNAME; then
+    echo "DEPLOYMENT_DIRNAME=$DEPLOYMENT_DIRNAME" >> .deployment-env
+else
+    if tr_isSetAndNotFalse REGISTRY_PROJECT; then
+        echo "DEPLOYMENT_DIRNAME=$REGISTRY_PROJECT" >> .deployment-env
+    fi
+fi
+
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     echo "DOCKER_REGISTRY is set -> starting to prepare docker-deployment-phase"
-    cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar && rm -rf .deployment-env
-    touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
+    cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar
     echo "DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
     echo "DEPLOYMENT_SERVER=$DEPLOYMENT_SERVER" >> .deployment-env
     echo "SSH_PORT=${SSH_PORT:=22}" >> .deployment-env

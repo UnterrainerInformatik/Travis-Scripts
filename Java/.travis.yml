@@ -21,6 +21,8 @@
 #                           ----------------- variables follow ----------------------------
 # DEPLOYMENT_USER               User to use when SSHing to deployment server
 # DEPLOYMENT_SERVER             Address of the deployment server to SSH to
+# DEPLOYMENT_DIRNAME            Directory name to install to on the server
+#                               Will be REGISTRY_PROJECT, if not set
 # SSH_PORT                      Defaults to 22
 # REGISTRY_URL                  Defaults to docker.io
 # REGISTRY_USER                 The user of the registry to deploy to
