@@ -5,6 +5,7 @@
 ### Deploy
 # 
 # DOCKER_REGISTRY           If true, then the packet will be published in a docker-registry
+# SKIP_BUILD        'true' if you want to skip the build and just move on to deploy
 #                           ----------------- variables follow ----------------------------
 # DEPLOYMENT_USER               User to use when SSHing to deployment server
 # DEPLOYMENT_SERVER             Address of the deployment server to SSH to
