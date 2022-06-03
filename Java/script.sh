@@ -4,6 +4,8 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
   return 0
 fi
 
+export JAVA_HOME=/usr/lib/jvm/openjdk-14-jdk
+export PATH="$JAVA_HOME/bin:$PATH"
 mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
 
 if tr_isSetAndNotFalse MAVEN_CENTRAL; then
