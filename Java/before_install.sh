@@ -28,9 +28,10 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
   return 0
 fi
 
-echo "Extracting project data from POM"
+echo Trying to locate the Java JDK...
 which Java ||whereis java || echo "### could not get java-path"
-export JAVA_HOME=/usr/bin/java
+export JAVA_HOME=/usr/local/lib/jvm/openjdk11/bin/java
+echo JAVA_HOME: $JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
 export LOCAL_REPO=$(mvn -q -Dexec.executable=echo -Dexec.args='${settings.localRepository}' --non-recursive exec:exec)
