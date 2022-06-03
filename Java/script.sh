@@ -4,8 +4,10 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
   return 0
 fi
 
-which Java ||whereis java || echo "### could not get java-path"
-export JAVA_HOME=/usr/bin/java
+echo Trying to locate the Java JDK...
+which Java ||whereis java || echo "FATAL: Could not get java-path!"
+export JAVA_HOME=/usr/local/lib/jvm/openjdk11/bin/java
+echo JAVA_HOME: $JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
 mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
