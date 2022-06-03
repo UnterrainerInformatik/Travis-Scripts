@@ -30,7 +30,7 @@ fi
 
 echo "Extracting project data from POM"
 which Java ||whereis java || echo "### could not get java-path"
-export JAVA_HOME=/usr/lib/jvm/openjdk-14-jdk
+export JAVA_HOME=/usr/bin/java
 export PATH="$JAVA_HOME/bin:$PATH"
 
 export LOCAL_REPO=$(mvn -q -Dexec.executable=echo -Dexec.args='${settings.localRepository}' --non-recursive exec:exec)

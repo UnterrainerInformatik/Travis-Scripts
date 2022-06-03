@@ -5,7 +5,7 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
 fi
 
 which Java ||whereis java || echo "### could not get java-path"
-export JAVA_HOME=/usr/lib/jvm/openjdk-14-jdk
+export JAVA_HOME=/usr/bin/java
 export PATH="$JAVA_HOME/bin:$PATH"
 
 mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
