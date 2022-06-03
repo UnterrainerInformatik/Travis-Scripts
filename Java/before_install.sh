@@ -29,6 +29,10 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
 fi
 
 echo "Extracting project data from POM"
+which Java ||whereis java || echo "### could not get java-path"
+export JAVA_HOME=/usr/lib/jvm/openjdk-14-jdk
+export PATH="$JAVA_HOME/bin:$PATH"
+
 export LOCAL_REPO=$(mvn -q -Dexec.executable=echo -Dexec.args='${settings.localRepository}' --non-recursive exec:exec)
 export GROUP_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.groupId}' --non-recursive exec:exec)
 export ARTIFACT_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
