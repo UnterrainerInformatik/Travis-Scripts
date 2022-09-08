@@ -10,6 +10,7 @@ echo allo-loopback-pinentry for older gnupg versions
 # Was fixed in version 2.11.12, but with travis' docker-runner we're stuck with 2.11.11 for now.
 echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
 gpgconf --reload gpg-agent
+systemctl --user status gpg-agent
 
 if tr_isSetAndNotFalse DEPLOY; then
     echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
