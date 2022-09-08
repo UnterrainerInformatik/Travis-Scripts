@@ -5,6 +5,12 @@ echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --ba
 echo importing gpg ownertrust
 echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 
+echo allo-loopback-pinentry for older gnupg versions
+# Needed for old version of gnupg. If runner is updated you may remove the next two lines.
+# Was fixed in version 2.11.12, but with travis' docker-runner we're stuck with 2.11.11 for now.
+echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+gpgconf --reload gpg-agent
+
 if tr_isSetAndNotFalse DEPLOY; then
     echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
     echo "DEPLOY is set -> importing SSH keys"
