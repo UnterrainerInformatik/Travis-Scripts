@@ -10,11 +10,6 @@ export JAVA_HOME=/usr/local/lib/jvm/openjdk11
 echo JAVA_HOME: $JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
-echo Importing gpg secret key
-echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
-echo importing gpg ownertrust
-echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
-
 mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
 
 if tr_isSetAndNotFalse MAVEN_CENTRAL; then
