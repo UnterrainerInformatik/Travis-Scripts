@@ -31,6 +31,9 @@ else
 fi
 
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
+    if tr_isSet BUILD_ARCH; then
+        BUILD_ARCH_STR=-${BUILD_ARCH}
+    fi
     echo "DOCKER_REGISTRY is set -> starting to prepare docker-deployment-phase"
     cp target/$REGISTRY_PROJECT-$POM_VERSION.jar target/application.jar
     echo "DEPLOYMENT_USER=$DEPLOYMENT_USER" >> .deployment-env
@@ -45,10 +48,10 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     echo "REGISTRY_URL=${REGISTRY_URL:=$HELP_VAR_REG}" >> .deployment-env
     echo "REGISTRY_URL_AND_GROUP=$REGISTRY_URL_AND_GROUP" >> .deployment-env
     echo "VERSION=$POM_VERSION" >> .deployment-env
-    echo "LATEST_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:latest" >> .deployment-env
-    echo "MAJOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1)" >> .deployment-env
-    echo "MINOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2)" >> .deployment-env
-    echo "BUILD_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)" >> .deployment-env
+    echo "LATEST_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:latest${BUILD_ARCH_STR}" >> .deployment-env
+    echo "MAJOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1)${BUILD_ARCH_STR}" >> .deployment-env
+    echo "MINOR_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2)${BUILD_ARCH_STR}" >> .deployment-env
+    echo "BUILD_VER=$REGISTRY_URL_AND_GROUP/$REGISTRY_PROJECT:$(echo $POM_VERSION | cut -d. -f1).$(echo $POM_VERSION | cut -d. -f2).$(echo $POM_VERSION | cut -d. -f3)${BUILD_ARCH_STR}" >> .deployment-env
     cat .deployment-env
     if [ -f "set-deployment-env.sh" ]; then
         envsubst < ./set-deployment-env.sh | tee filled-set-deployment-env.sh
@@ -57,27 +60,43 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
         set +a
     fi
 
-    source .deployment-env
-    echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
-    docker info
-    echo $ "docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $BUILD_VER ."
-    docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $BUILD_VER .
+    if tr_isSet BUILD_ARCH; then
+        source .deployment-env
+        echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
+        docker info
+        echo $ "docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $BUILD_VER ."
+        docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $BUILD_VER .
 
-    echo "docker tag $LATEST_VER $LATEST_VER"
-    docker tag $LATEST_VER $LATEST_VER
-    echo "docker push $LATEST_VER && docker image rm $LATEST_VER"
-    docker push $LATEST_VER && docker image rm $LATEST_VER
-    echo "docker tag $MAJOR_VER $MAJOR_VER"
-    docker tag $MAJOR_VER $MAJOR_VER
-    echo "docker push $MAJOR_VER && docker image rm $MAJOR_VER"
-    docker push $MAJOR_VER && docker image rm $MAJOR_VER
-    echo "docker tag $MINOR_VER $MINOR_VER"
-    docker tag $MINOR_VER $MINOR_VER
-    echo "docker push $MINOR_VER && docker image rm $MINOR_VER"
-    docker push $MINOR_VER && docker image rm $MINOR_VER
-    echo "docker tag $BUILD_VER $BUILD_VER"
-    docker tag $BUILD_VER $BUILD_VER
-    echo "docker push $BUILD_VER && docker image rm $BUILD_VER"
-    docker push $BUILD_VER && docker image rm $BUILD_VER
-    echo "done preparing docker-deployment-phase"
+        echo "docker tag $LATEST_VER $LATEST_VER"
+        docker tag $LATEST_VER $LATEST_VER
+        echo "docker push $LATEST_VER && docker image rm $LATEST_VER"
+        docker push $LATEST_VER && docker image rm $LATEST_VER
+        echo "docker tag $MAJOR_VER $MAJOR_VER"
+        docker tag $MAJOR_VER $MAJOR_VER
+        echo "docker push $MAJOR_VER && docker image rm $MAJOR_VER"
+        docker push $MAJOR_VER && docker image rm $MAJOR_VER
+        echo "docker tag $MINOR_VER $MINOR_VER"
+        docker tag $MINOR_VER $MINOR_VER
+        echo "docker push $MINOR_VER && docker image rm $MINOR_VER"
+        docker push $MINOR_VER && docker image rm $MINOR_VER
+        echo "docker tag $BUILD_VER $BUILD_VER"
+        docker tag $BUILD_VER $BUILD_VER
+        echo "docker push $BUILD_VER && docker image rm $BUILD_VER"
+        docker push $BUILD_VER && docker image rm $BUILD_VER
+        echo "done preparing docker-deployment-phase"
+    else
+        if tr_isSet BUILD_PUBLISH; then
+            source .deployment-env
+            echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
+            docker info
+            docker manifest create $LATEST_VER --amend $LATEST_VER-amd64 --amend $LATEST_VER-arm64
+            docker manifest push $LATEST_VER
+            docker manifest create $MAJOR_VER --amend $MAJOR_VER-amd64 --amend $MAJOR_VER-arm64
+            docker manifest push $MAJOR_VER
+            docker manifest create $MINOR_VER --amend $MINOR_VER-amd64 --amend $MINOR_VER-arm64
+            docker manifest push $MINOR_VER
+            docker manifest create $BUILD_VER --amend $BUILD_VER-amd64 --amend $BUILD_VER-arm64
+            docker manifest push $BUILD_VER
+        fi
+    fi
 fi
