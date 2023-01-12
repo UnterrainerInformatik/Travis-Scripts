@@ -90,12 +90,12 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
         echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
         docker info
         docker manifest create $LATEST_VER --amend $LATEST_VER-amd64 --amend $LATEST_VER-arm64
-        docker manifest push $LATEST_VER
+        docker manifest push --purge $LATEST_VER
         docker manifest create $MAJOR_VER --amend $MAJOR_VER-amd64 --amend $MAJOR_VER-arm64
-        docker manifest push $MAJOR_VER
+        docker manifest push --purge $MAJOR_VER
         docker manifest create $MINOR_VER --amend $MINOR_VER-amd64 --amend $MINOR_VER-arm64
-        docker manifest push $MINOR_VER
+        docker manifest push --purge $MINOR_VER
         docker manifest create $BUILD_VER --amend $BUILD_VER-amd64 --amend $BUILD_VER-arm64
-        docker manifest push $BUILD_VER
+        docker manifest push --purge $BUILD_VER
     fi
 fi
