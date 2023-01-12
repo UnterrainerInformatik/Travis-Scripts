@@ -60,8 +60,8 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
         set +a
     fi
 
-    if tr_isSet BUILD_ARCH; then
-        source .deployment-env
+    source .deployment-env
+    if ! tr_isSet BUILD_PUBLISH; then
         echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
         docker info
         echo $ "docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $BUILD_VER ."
@@ -84,19 +84,18 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
         echo "docker push $BUILD_VER && docker image rm $BUILD_VER"
         docker push $BUILD_VER && docker image rm $BUILD_VER
         echo "done preparing docker-deployment-phase"
-    else
-        if tr_isSet BUILD_PUBLISH; then
-            source .deployment-env
-            echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
-            docker info
-            docker manifest create $LATEST_VER --amend $LATEST_VER-amd64 --amend $LATEST_VER-arm64
-            docker manifest push $LATEST_VER
-            docker manifest create $MAJOR_VER --amend $MAJOR_VER-amd64 --amend $MAJOR_VER-arm64
-            docker manifest push $MAJOR_VER
-            docker manifest create $MINOR_VER --amend $MINOR_VER-amd64 --amend $MINOR_VER-arm64
-            docker manifest push $MINOR_VER
-            docker manifest create $BUILD_VER --amend $BUILD_VER-amd64 --amend $BUILD_VER-arm64
-            docker manifest push $BUILD_VER
-        fi
+    fi
+    if tr_isSet BUILD_PUBLISH; then
+        source .deployment-env
+        echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
+        docker info
+        docker manifest create $LATEST_VER --amend $LATEST_VER-amd64 --amend $LATEST_VER-arm64
+        docker manifest push $LATEST_VER
+        docker manifest create $MAJOR_VER --amend $MAJOR_VER-amd64 --amend $MAJOR_VER-arm64
+        docker manifest push $MAJOR_VER
+        docker manifest create $MINOR_VER --amend $MINOR_VER-amd64 --amend $MINOR_VER-arm64
+        docker manifest push $MINOR_VER
+        docker manifest create $BUILD_VER --amend $BUILD_VER-amd64 --amend $BUILD_VER-arm64
+        docker manifest push $BUILD_VER
     fi
 fi
