@@ -12,6 +12,7 @@ echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
 gpgconf --reload gpg-agent
 systemctl --user status gpg-agent
 
+echo conditional DEPLOY
 if tr_isSetAndNotFalse DEPLOY; then
     echo "DEPLOY is set -> starting to prepare SSH-deployment-phase"
     echo "DEPLOY is set -> importing SSH keys"
@@ -27,9 +28,17 @@ if tr_isSetAndNotFalse DEPLOY; then
     echo "done preparing SSH-deployment-phase"
 fi
 
+echo conditional SKIP_BUILD
 if tr_isSetAndNotFalse SKIP_BUILD; then
   return 0
 fi
+
+# JAVA Install workaround...
+echo Installing JAVA openJDK 19.0.1
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install java 19.0.1-open
+sdk use java 19.0.1-open
 
 echo Trying to locate the Java JDK...
 which Java ||whereis java || echo "FATAL: Could not get java-path!"
