@@ -33,7 +33,7 @@ fi
 
 echo Trying to locate the Java JDK...
 which Java ||whereis java || echo "FATAL: Could not get java-path!"
-export JAVA_HOME=/usr/local/lib/jvm/openjdk11
+# export JAVA_HOME=/usr/local/lib/jvm/openjdk11
 echo JAVA_HOME: $JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
