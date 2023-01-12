@@ -12,7 +12,7 @@ echo JAVA_HOME: $JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
 echo conditional GPG_EXECUTABLE
-if tr_isSet GPG_EXECUTABLE then
+if tr_isSet GPG_EXECUTABLE; then
   echo $GPG_EXECUTABLE --version
   $GPG_EXECUTABLE --version
 fi
