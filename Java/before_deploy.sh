@@ -6,7 +6,9 @@
 echo "re-sourcing functions"
 source travis/functions.Java.sh
 
-if tr_isSetAndNotFalse RELEASE && ! tr_isSet BUILD_PUBLISH; then
+echo conditional RELEASE
+echo conditional not BUILD_PUBLISH
+if tr_isSetAndNotFalse RELEASE && ! tr_isSetAndNotFalse BUILD_PUBLISH; then
     echo "RELEASE is set -> making ZIP-file"
     mkdir -p ziptemp/$ARTIFACT_ID
     cp -a target/* ziptemp/$ARTIFACT_ID
@@ -22,15 +24,19 @@ fi
 
 rm -rf .deployment-env
 touch .deployment-env && echo "#!/usr/bin/env bash" >> .deployment-env
+echo conditional DEPLOYMENT_DIRNAME
 if tr_isSetAndNotFalse DEPLOYMENT_DIRNAME; then
     echo "DEPLOYMENT_DIRNAME=$DEPLOYMENT_DIRNAME" >> .deployment-env
 else
+    echo conditional REGISTRY_PROJECT
     if tr_isSetAndNotFalse REGISTRY_PROJECT; then
         echo "DEPLOYMENT_DIRNAME=$REGISTRY_PROJECT" >> .deployment-env
     fi
 fi
 
+echo conditional DOCKER_REGISTRY
 if tr_isSetAndNotFalse DOCKER_REGISTRY; then
+    echo conditional BUILD_ARCH
     if tr_isSet BUILD_ARCH; then
         BUILD_ARCH_STR=-${BUILD_ARCH}
     fi
@@ -61,7 +67,8 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
     fi
 
     source .deployment-env
-    if ! tr_isSet BUILD_PUBLISH; then
+    echo conditional BUILD_PUBLISH
+    if ! tr_isSetAndNotFalse BUILD_PUBLISH; then
         echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
         docker info
         echo $ "docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $BUILD_VER ."
@@ -85,7 +92,8 @@ if tr_isSetAndNotFalse DOCKER_REGISTRY; then
         docker push $BUILD_VER && docker image rm $BUILD_VER
         echo "done preparing docker-deployment-phase"
     fi
-    if tr_isSet BUILD_PUBLISH; then
+    echo conditional BUILD_PUBLISH
+    if tr_isSetAndNotFalse BUILD_PUBLISH; then
         source .deployment-env
         echo "$REGISTRY_PASSWORD"| docker login -u "$REGISTRY_USER" --password-stdin "$REGISTRY_URL"
         docker info

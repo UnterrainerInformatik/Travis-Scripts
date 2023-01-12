@@ -9,7 +9,9 @@ source $TRAVIS/before_install.sh
 
 echo "starting deploy stage"
 
+echo conditional DEPLOY
 if tr_isSetAndNotFalse DEPLOY; then
+  echo conditional BUILD_ARCH
   if ! tr_isSet BUILD_ARCH; then
     rm -rf .env
     cp ./.deployment-env ./.env
