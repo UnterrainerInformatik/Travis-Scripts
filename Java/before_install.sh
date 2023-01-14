@@ -34,11 +34,11 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
 fi
 
 # JAVA Install workaround...
-echo Installing JAVA openJDK 19.0.1
+echo Installing JAVA openJDK 18.0.2
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install java 19.0.1-open
-sdk use java 19.0.1-open
+sdk install java 18.0.2-open
+sdk use java 18.0.2-open
 
 echo Trying to locate the Java JDK...
 which Java ||whereis java || echo "FATAL: Could not get java-path!"
