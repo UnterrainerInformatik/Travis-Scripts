@@ -34,11 +34,15 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
 fi
 
 # JAVA Install workaround...
-echo Installing JAVA openJDK 18.0.2
+JDK_VERSION="18.0.2-open"
+if tr_isSet SDKMAN_JDK_VERSION; then
+  JDK_VERSION="${SDKMAN_JDK_VERSION}"
+fi
+echo Installing JAVA openJDK ${JDK_VERSION}
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install java 18.0.2-open
-sdk use java 18.0.2-open
+sdk install java ${JDK_VERSION}
+sdk use java ${JDK_VERSION}
 
 echo Trying to locate the Java JDK...
 which Java ||whereis java || echo "FATAL: Could not get java-path!"
