@@ -23,10 +23,10 @@ mvn -B versions:set -DnewVersion=$POM_VERSION -DgenerateBackupPoms=false
 echo conditional MAVEN_CENTRAL
 if tr_isSetAndNotFalse MAVEN_CENTRAL; then
   if [ "$TRAVIS_BRANCH" = "master" ]; then
-    mvn clean deploy --settings $TRAVIS/settings.xml -B -U -DreleaseSonatype=true
+    mvn clean deploy --settings $TRAVIS/settings.xml -B -U -Dmaven.test.skip -DreleaseSonatype=true
   else
-    mvn clean install --settings $TRAVIS/settings.xml -B -U -Prelease
+    mvn clean install --settings $TRAVIS/settings.xml -B -U -Dmaven.test.skip -Prelease
   fi
 else
-  mvn clean install --settings $TRAVIS/settings.xml -B -U -Prelease
+  mvn clean install --settings $TRAVIS/settings.xml -B -U -Dmaven.test.skip -Prelease
 fi
