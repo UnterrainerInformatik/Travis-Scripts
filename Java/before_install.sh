@@ -33,16 +33,15 @@ if tr_isSetAndNotFalse SKIP_BUILD; then
   return 0
 fi
 
-# JAVA Install workaround...
-JDK_VERSION="18.0.2-open"
+# JAVA Install for other versions than set in the docker-image of the travis-jdk container...
 if tr_isSet SDKMAN_JDK_VERSION; then
   JDK_VERSION="${SDKMAN_JDK_VERSION}"
+  echo Installing JAVA openJDK ${JDK_VERSION}
+  curl -s "https://get.sdkman.io" | bash
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
+  sdk install java ${JDK_VERSION}
+  sdk use java ${JDK_VERSION}
 fi
-echo Installing JAVA openJDK ${JDK_VERSION}
-curl -s "https://get.sdkman.io" | bash
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install java ${JDK_VERSION}
-sdk use java ${JDK_VERSION}
 
 echo Trying to locate the Java JDK...
 which Java ||whereis java || echo "FATAL: Could not get java-path!"
